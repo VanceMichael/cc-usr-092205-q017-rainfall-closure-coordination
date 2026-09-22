@@ -1,0 +1,129 @@
+{
+  "scenario": "rainstorm-night-cross-midnight",
+  "version": 1,
+  "description": "2026-09-21 夜间至 09-22 清晨，跨云溪区与临江县的持续暴雨：停课、校车停运、跨区封路、跨午夜雨带、离线传感器、人工误报、命令撤销与按观测条件恢复。全部为虚构样例。",
+  "grid_cells": [
+    {"id": "yx1", "district": "云溪区"},
+    {"id": "yx2", "district": "云溪区"},
+    {"id": "yx3", "district": "云溪区"},
+    {"id": "yx4", "district": "云溪区"},
+    {"id": "lj1", "district": "临江县"},
+    {"id": "lj2", "district": "临江县"},
+    {"id": "lj3", "district": "临江县"}
+  ],
+  "rain_bands": [
+    {
+      "id": "B1",
+      "level": 3,
+      "cells": ["yx1", "yx2", "yx3", "lj1"],
+      "valid_from": "2026-09-21T20:00:00+08:00",
+      "valid_to": "2026-09-22T02:00:00+08:00",
+      "observed_at": "2026-09-21T19:30:00+08:00"
+    },
+    {
+      "id": "B2",
+      "level": 2,
+      "cells": ["lj1", "lj2", "lj3"],
+      "valid_from": "2026-09-22T01:30:00+08:00",
+      "valid_to": "2026-09-22T05:00:00+08:00",
+      "observed_at": "2026-09-22T01:20:00+08:00"
+    }
+  ],
+  "observations": [
+    {"station": "ST-YX1", "cell": "yx1", "observed_at": "2026-09-21T21:50:00+08:00", "mm": 22.0},
+    {"station": "ST-YX2", "cell": "yx2", "observed_at": "2026-09-21T21:55:00+08:00", "mm": 18.0},
+    {"station": "ST-YX2", "cell": "yx2", "observed_at": "2026-09-21T22:30:00+08:00", "mm": 0.0, "quality": "offline"},
+    {"station": "MAN-LJ2", "cell": "lj2", "observed_at": "2026-09-21T23:10:00+08:00", "mm": 999.0, "source": "manual", "quality": "false_report"},
+    {"station": "ST-YX3", "cell": "yx3", "observed_at": "2026-09-21T23:35:00+08:00", "mm": 35.0},
+    {"station": "ST-LJ1", "cell": "lj1", "observed_at": "2026-09-22T00:40:00+08:00", "mm": 28.0},
+    {"station": "ST-YX3", "cell": "yx3", "observed_at": "2026-09-22T06:35:00+08:00", "mm": 0.8},
+    {"station": "ST-YX1", "cell": "yx1", "observed_at": "2026-09-22T06:30:00+08:00", "mm": 1.2},
+    {"station": "ST-LJ1", "cell": "lj1", "observed_at": "2026-09-22T06:40:00+08:00", "mm": 0.6},
+    {"station": "ST-YX2", "cell": "yx2", "observed_at": "2026-09-22T06:40:00+08:00", "mm": 0.5}
+  ],
+  "geohazards": [
+    {"id": "G1", "name": "云临山口滑坡隐患点", "cells": ["yx3"]}
+  ],
+  "roads": [
+    {"id": "D1", "name": "云溪大道", "cells": ["yx1", "yx2"]},
+    {"id": "D2", "name": "云临盘山公路", "cells": ["yx3", "lj1"]}
+  ],
+  "waterlogs": [
+    {"road_id": "D1", "observed_at": "2026-09-21T22:00:00+08:00", "depth_cm": 40.0, "quality": "false_report"},
+    {"road_id": "D2", "observed_at": "2026-09-21T23:30:00+08:00", "depth_cm": 32.0},
+    {"road_id": "D2", "observed_at": "2026-09-22T06:50:00+08:00", "depth_cm": 5.0}
+  ],
+  "schools": [
+    {"id": "S1", "name": "云溪区第一小学", "cells": ["yx1", "yx2"]},
+    {"id": "S2", "name": "临江县第二小学", "cells": ["lj2"]}
+  ],
+  "bus_routes": [
+    {"id": "R1", "name": "一小1号线", "cells": ["yx2", "yx3"], "school_id": "S1"}
+  ],
+  "shelters": [
+    {"id": "H1", "name": "云溪体育馆避险场所", "cells": ["yx1"]},
+    {"id": "H2", "name": "临江一中避险场所", "cells": ["lj1"]}
+  ],
+  "orders": [
+    {
+      "id": "O1",
+      "agency": "education",
+      "action": "suspend_class",
+      "target_id": "S1",
+      "cells": ["yx1", "yx2"],
+      "issued_at": "2026-09-21T21:55:00+08:00",
+      "reason": "暴雨橙色预警落区覆盖学校格点，夜间持续降雨"
+    },
+    {
+      "id": "O2",
+      "agency": "transport",
+      "action": "suspend_bus",
+      "target_id": "R1",
+      "cells": ["yx2", "yx3"],
+      "issued_at": "2026-09-21T22:05:00+08:00",
+      "reason": "关联学校停课且线路临近地质灾害点"
+    },
+    {
+      "id": "O3",
+      "agency": "transport",
+      "action": "close_road",
+      "target_id": "D2",
+      "cells": ["yx3", "lj1"],
+      "issued_at": "2026-09-21T23:40:00+08:00",
+      "reason": "跨区盘山公路积水32厘米且临滑坡隐患点"
+    },
+    {
+      "id": "O4",
+      "agency": "transport",
+      "action": "open_road",
+      "target_id": "D2",
+      "cells": ["yx3", "lj1"],
+      "issued_at": "2026-09-22T06:55:00+08:00",
+      "reason": "雨带已东移，早高峰前申请解封",
+      "revokes": "O3",
+      "condition": {"max_rain_1h_mm": 5.0, "max_water_cm": 10.0, "sensor_fresh_minutes": 60}
+    },
+    {
+      "id": "O5",
+      "agency": "transport",
+      "action": "resume_bus",
+      "target_id": "R1",
+      "cells": ["yx2", "yx3"],
+      "issued_at": "2026-09-22T07:05:00+08:00",
+      "reason": "道路已解封，申请恢复校车发车",
+      "revokes": "O2",
+      "condition": {"max_rain_1h_mm": 5.0, "sensor_fresh_minutes": 60}
+    },
+    {
+      "id": "O6",
+      "agency": "education",
+      "action": "resume_class",
+      "target_id": "S1",
+      "cells": ["yx1", "yx2"],
+      "issued_at": "2026-09-22T07:10:00+08:00",
+      "reason": "雨情缓解，申请恢复上课",
+      "revokes": "O1",
+      "condition": {"max_rain_1h_mm": 5.0, "sensor_fresh_minutes": 60}
+    }
+  ]
+}

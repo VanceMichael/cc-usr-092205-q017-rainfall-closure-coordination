@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "持续降雨联合停课封路·统一指挥情景",
+  "type": "object",
+  "required": ["scenario", "version", "grid_cells", "rain_bands", "observations"],
+  "properties": {
+    "scenario": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 1},
+    "description": {"type": "string"},
+    "grid_cells": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "district"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "district": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "rain_bands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "level", "cells", "valid_from", "valid_to", "observed_at"],
+        "properties": {
+          "id": {"type": "string"},
+          "level": {"type": "integer", "minimum": 1, "maximum": 4},
+          "cells": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "valid_from": {"type": "string"},
+          "valid_to": {"type": "string"},
+          "observed_at": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["station", "cell", "observed_at", "mm"],
+        "properties": {
+          "station": {"type": "string"},
+          "cell": {"type": "string"},
+          "observed_at": {"type": "string"},
+          "mm": {"type": "number"},
+          "source": {"type": "string", "enum": ["sensor", "manual"]},
+          "quality": {"type": "string", "enum": ["ok", "offline", "false_report"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "geohazards": {"$ref": "#/$defs/features"},
+    "roads": {"$ref": "#/$defs/features"},
+    "schools": {"$ref": "#/$defs/features"},
+    "shelters": {"$ref": "#/$defs/features"},
+    "bus_routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "cells", "school_id"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "cells": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "school_id": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "waterlogs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["road_id", "observed_at", "depth_cm"],
+        "properties": {
+          "road_id": {"type": "string"},
+          "observed_at": {"type": "string"},
+          "depth_cm": {"type": "number"},
+          "quality": {"type": "string", "enum": ["ok", "false_report"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "orders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "agency", "action", "target_id", "cells", "issued_at"],
+        "properties": {
+          "id": {"type": "string"},
+          "agency": {"type": "string", "enum": ["education", "transport", "emergency"]},
+          "action": {
+            "type": "string",
+            "enum": [
+              "suspend_class", "resume_class",
+              "suspend_bus", "resume_bus",
+              "close_road", "open_road"
+            ]
+          },
+          "target_id": {"type": "string"},
+          "cells": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "issued_at": {"type": "string"},
+          "reason": {"type": "string"},
+          "revokes": {"type": "string"},
+          "status": {"type": "string", "enum": ["pending", "published"]},
+          "condition": {
+            "type": "object",
+            "required": ["max_rain_1h_mm"],
+            "properties": {
+              "max_rain_1h_mm": {"type": "number"},
+              "max_water_cm": {"type": "number"},
+              "sensor_fresh_minutes": {"type": "integer", "minimum": 1}
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "cells"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "cells": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
