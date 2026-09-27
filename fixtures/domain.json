@@ -1,7 +1,7 @@
 {
   "domain": "rainfall-closure-coordination",
-  "version": 1,
-  "sample_id": "record-017",
+  "version": 2,
+  "sample_id": "record-018",
   "actors": [
     "业务负责人",
     "一线执行人员",
@@ -10,12 +10,907 @@
   "facts": [
     "重庆和湖北西部等地可能出现暴雨或大暴雨",
     "持续阴雨会增加山区和河谷地质灾害风险",
-    "气象部门提醒公众注意交通安全并避开隐患点"
+    "气象部门提醒公众注意交通安全并避开隐患点",
+    "预警落区、实况雨量、地灾点、积水道路、学校、校车线路和避险场所统一映射到同一套预报格点",
+    "预警升级或雨带移动只影响与落区真正相交的对象",
+    "停课由教育部门签发，校车停运由交通部门签发，封路由应急部门签发",
+    "恢复上课或道路解封必须满足写明的观测条件，传感器离线期间不得解封",
+    "跨区道路、跨午夜降雨、人工误报与命令撤销都保留原始时刻"
   ],
   "constraints": [
     "多源雨情",
     "影响范围计算",
     "联合命令",
-    "公众通知"
+    "公众通知",
+    "恢复条件核验",
+    "矛盾发布拦截"
+  ],
+  "cells": [
+    {
+      "id": "G1",
+      "polygon": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "G2",
+      "polygon": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "G3",
+      "polygon": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "id": "G4",
+      "polygon": [
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ]
+    }
+  ],
+  "districts": [
+    {
+      "id": "D1",
+      "name": "临江县",
+      "polygon": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "id": "D2",
+      "name": "河谷区",
+      "polygon": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ]
+    }
+  ],
+  "schools": [
+    {
+      "id": "S1",
+      "name": "临江一小",
+      "district": "D1",
+      "point": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "S2",
+      "name": "临江二小",
+      "district": "D1",
+      "point": [
+        0.5,
+        1.5
+      ]
+    },
+    {
+      "id": "S3",
+      "name": "河谷小学",
+      "district": "D2",
+      "point": [
+        1.5,
+        0.5
+      ]
+    }
+  ],
+  "roads": [
+    {
+      "id": "R1",
+      "name": "滨江路",
+      "polyline": [
+        [
+          0.2,
+          0.5
+        ],
+        [
+          1.8,
+          0.5
+        ]
+      ]
+    },
+    {
+      "id": "R2",
+      "name": "山前公路",
+      "polyline": [
+        [
+          1.5,
+          0.2
+        ],
+        [
+          1.5,
+          1.8
+        ]
+      ]
+    },
+    {
+      "id": "R3",
+      "name": "西环路",
+      "polyline": [
+        [
+          0.5,
+          1.2
+        ],
+        [
+          0.5,
+          1.8
+        ]
+      ]
+    }
+  ],
+  "bus_routes": [
+    {
+      "id": "B1",
+      "name": "校车一号线",
+      "serves": [
+        "S1",
+        "S3"
+      ],
+      "uses_roads": [
+        "R1"
+      ],
+      "polyline": [
+        [
+          0.5,
+          0.5
+        ],
+        [
+          1.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "id": "B2",
+      "name": "校车二号线",
+      "serves": [
+        "S3"
+      ],
+      "uses_roads": [
+        "R2"
+      ],
+      "polyline": [
+        [
+          1.5,
+          0.5
+        ],
+        [
+          1.5,
+          1.5
+        ]
+      ]
+    }
+  ],
+  "hazard_sites": [
+    {
+      "id": "H1",
+      "name": "老鹰岩滑坡隐患点",
+      "point": [
+        0.6,
+        0.7
+      ]
+    },
+    {
+      "id": "H2",
+      "name": "河谷泥石流隐患点",
+      "point": [
+        1.6,
+        0.4
+      ]
+    }
+  ],
+  "shelters": [
+    {
+      "id": "K1",
+      "name": "临江中学体育馆",
+      "point": [
+        0.4,
+        0.6
+      ]
+    },
+    {
+      "id": "K2",
+      "name": "河谷文化中心",
+      "point": [
+        1.6,
+        0.6
+      ]
+    },
+    {
+      "id": "K3",
+      "name": "北山社区中心",
+      "point": [
+        0.6,
+        1.6
+      ]
+    }
+  ],
+  "rainfall_stations": [
+    {
+      "id": "P1",
+      "cell": "G1",
+      "point": [
+        0.3,
+        0.3
+      ]
+    },
+    {
+      "id": "P2",
+      "cell": "G2",
+      "point": [
+        1.7,
+        0.3
+      ]
+    },
+    {
+      "id": "P3",
+      "cell": "G3",
+      "point": [
+        0.3,
+        1.7
+      ]
+    },
+    {
+      "id": "P4",
+      "cell": "G4",
+      "point": [
+        1.7,
+        1.7
+      ]
+    }
+  ],
+  "rainfall_series": [
+    {
+      "station_id": "P1",
+      "start": "2026-07-12T19:30:00+08:00",
+      "interval_minutes": 30,
+      "values": [
+        0,
+        0,
+        1,
+        4,
+        8,
+        10,
+        9,
+        7,
+        5,
+        3,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "station_id": "P2",
+      "start": "2026-07-12T19:30:00+08:00",
+      "interval_minutes": 30,
+      "values": [
+        0,
+        0,
+        1,
+        3,
+        7,
+        9,
+        10,
+        9,
+        8,
+        6,
+        4,
+        2,
+        1,
+        null,
+        null,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "station_id": "P3",
+      "start": "2026-07-12T19:30:00+08:00",
+      "interval_minutes": 30,
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        4,
+        6,
+        9,
+        11,
+        10,
+        10,
+        9,
+        8,
+        6,
+        4,
+        3,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "station_id": "P4",
+      "start": "2026-07-12T19:30:00+08:00",
+      "interval_minutes": 30,
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        3,
+        4,
+        2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "events": [
+    {
+      "type": "warning",
+      "id": "W1",
+      "time": "2026-07-12T19:50:00+08:00",
+      "issued_at": "2026-07-12T19:50:00+08:00",
+      "level": "橙色",
+      "cells": [
+        "G1",
+        "G2"
+      ],
+      "valid_from": "2026-07-12T20:00:00+08:00",
+      "valid_to": "2026-07-13T02:00:00+08:00",
+      "supersedes": [],
+      "note": null
+    },
+    {
+      "type": "order",
+      "id": "O1",
+      "time": "2026-07-12T20:05:00+08:00",
+      "issued_at": "2026-07-12T20:05:00+08:00",
+      "effective_at": "2026-07-12T20:10:00+08:00",
+      "actor": "教育值班员·临江县",
+      "authority": "education",
+      "action": "suspend_classes",
+      "target": "S1",
+      "target_kind": "school",
+      "cells": [
+        "G1"
+      ],
+      "note": null
+    },
+    {
+      "type": "publish_blocked",
+      "id": "PB-1",
+      "time": "2026-07-12T20:08:00+08:00",
+      "version": 1,
+      "reasons": [
+        "学校 S1 已停课，但校车线路 B1 仍显示正常运营"
+      ]
+    },
+    {
+      "type": "order",
+      "id": "O2",
+      "time": "2026-07-12T20:15:00+08:00",
+      "issued_at": "2026-07-12T20:15:00+08:00",
+      "effective_at": "2026-07-12T20:20:00+08:00",
+      "actor": "交通值班员",
+      "authority": "transport",
+      "action": "suspend_route",
+      "target": "B1",
+      "target_kind": "bus_route",
+      "cells": [
+        "G1",
+        "G2"
+      ],
+      "note": null
+    },
+    {
+      "type": "order",
+      "id": "O3",
+      "time": "2026-07-12T20:16:00+08:00",
+      "issued_at": "2026-07-12T20:16:00+08:00",
+      "effective_at": "2026-07-12T20:20:00+08:00",
+      "actor": "交通值班员",
+      "authority": "transport",
+      "action": "suspend_route",
+      "target": "B2",
+      "target_kind": "bus_route",
+      "cells": [
+        "G2",
+        "G4"
+      ],
+      "note": null
+    },
+    {
+      "type": "order",
+      "id": "O4",
+      "time": "2026-07-12T20:18:00+08:00",
+      "issued_at": "2026-07-12T20:18:00+08:00",
+      "effective_at": "2026-07-12T20:25:00+08:00",
+      "actor": "教育值班员·河谷区",
+      "authority": "education",
+      "action": "suspend_classes",
+      "target": "S3",
+      "target_kind": "school",
+      "cells": [
+        "G2"
+      ],
+      "note": null
+    },
+    {
+      "type": "order",
+      "id": "O5",
+      "time": "2026-07-12T20:20:00+08:00",
+      "issued_at": "2026-07-12T20:20:00+08:00",
+      "effective_at": "2026-07-12T20:30:00+08:00",
+      "actor": "应急值班员",
+      "authority": "emergency",
+      "action": "close_road",
+      "target": "R2",
+      "target_kind": "road",
+      "cells": [
+        "G2",
+        "G4"
+      ],
+      "note": null
+    },
+    {
+      "type": "bulletin_published",
+      "id": "BP-2",
+      "time": "2026-07-12T20:35:00+08:00",
+      "version": 2,
+      "item_count": 5
+    },
+    {
+      "type": "order",
+      "id": "O6",
+      "time": "2026-07-12T21:10:00+08:00",
+      "issued_at": "2026-07-12T21:10:00+08:00",
+      "effective_at": "2026-07-12T21:20:00+08:00",
+      "actor": "应急值班员",
+      "authority": "emergency",
+      "action": "close_road",
+      "target": "R3",
+      "target_kind": "road",
+      "cells": [
+        "G3"
+      ],
+      "note": "误封"
+    },
+    {
+      "type": "order_revoked",
+      "id": "O6-revoked",
+      "time": "2026-07-12T21:40:00+08:00",
+      "order_id": "O6",
+      "actor": "应急值班员",
+      "reason": "复核发现 R3 与预警落区不相交，属误封"
+    },
+    {
+      "type": "order",
+      "id": "O7",
+      "time": "2026-07-12T21:45:00+08:00",
+      "issued_at": "2026-07-12T21:45:00+08:00",
+      "effective_at": "2026-07-12T21:50:00+08:00",
+      "actor": "应急值班员",
+      "authority": "emergency",
+      "action": "close_road",
+      "target": "R1",
+      "target_kind": "road",
+      "cells": [
+        "G1",
+        "G2"
+      ],
+      "note": null
+    },
+    {
+      "type": "warning",
+      "id": "W2",
+      "time": "2026-07-12T21:50:00+08:00",
+      "issued_at": "2026-07-12T21:50:00+08:00",
+      "level": "红色",
+      "cells": [
+        "G1",
+        "G2",
+        "G3"
+      ],
+      "valid_from": "2026-07-12T22:00:00+08:00",
+      "valid_to": "2026-07-13T02:00:00+08:00",
+      "supersedes": [
+        "W1"
+      ],
+      "note": null
+    },
+    {
+      "type": "order",
+      "id": "O9",
+      "time": "2026-07-12T22:10:00+08:00",
+      "issued_at": "2026-07-12T22:10:00+08:00",
+      "effective_at": "2026-07-12T22:20:00+08:00",
+      "actor": "教育值班员·临江县",
+      "authority": "education",
+      "action": "suspend_classes",
+      "target": "S2",
+      "target_kind": "school",
+      "cells": [
+        "G3"
+      ],
+      "note": null
+    },
+    {
+      "type": "bulletin_published",
+      "id": "BP-3",
+      "time": "2026-07-12T22:30:00+08:00",
+      "version": 3,
+      "item_count": 7
+    },
+    {
+      "type": "warning",
+      "id": "W3",
+      "time": "2026-07-12T23:20:00+08:00",
+      "issued_at": "2026-07-12T23:20:00+08:00",
+      "level": "红色",
+      "cells": [
+        "G3",
+        "G4"
+      ],
+      "valid_from": "2026-07-12T23:30:00+08:00",
+      "valid_to": "2026-07-13T04:00:00+08:00",
+      "supersedes": [
+        "W2"
+      ],
+      "note": null
+    },
+    {
+      "type": "manual_report",
+      "id": "M1",
+      "time": "2026-07-13T01:20:00+08:00",
+      "reported_at": "2026-07-13T01:20:00+08:00",
+      "valid_to": "2026-07-13T04:00:00+08:00",
+      "reporter": "道路巡查员",
+      "target": "R2",
+      "summary": "山前公路低洼段积水"
+    },
+    {
+      "type": "order_rejected",
+      "id": "O10-rejected",
+      "time": "2026-07-13T02:00:00+08:00",
+      "actor": "应急值班员",
+      "action": "reopen_road",
+      "target": "R2",
+      "proposed_effective_at": "2026-07-13T02:00:00+08:00",
+      "reasons": [
+        "雨量站 P2 窗口累计 13.0 毫米，超过上限 10.0 毫米",
+        "预警 W3（红色）仍覆盖相关格点，高于允许等级 黄色",
+        "人工上报 M1 仍有效，未撤回"
+      ]
+    },
+    {
+      "type": "report_retracted",
+      "id": "M1-retracted",
+      "time": "2026-07-13T02:30:00+08:00",
+      "report_id": "M1",
+      "actor": "道路巡查员",
+      "reason": "巡查确认未积水，属误报"
+    },
+    {
+      "type": "order_rejected",
+      "id": "O11-rejected",
+      "time": "2026-07-13T02:45:00+08:00",
+      "actor": "应急值班员",
+      "action": "reopen_road",
+      "target": "R2",
+      "proposed_effective_at": "2026-07-13T03:00:00+08:00",
+      "reasons": [
+        "雨量站 P2 在观测窗口内离线或数据不足",
+        "预警 W3（红色）仍覆盖相关格点，高于允许等级 黄色"
+      ]
+    },
+    {
+      "type": "order",
+      "id": "O12",
+      "time": "2026-07-13T04:50:00+08:00",
+      "issued_at": "2026-07-13T04:50:00+08:00",
+      "effective_at": "2026-07-13T05:00:00+08:00",
+      "actor": "应急值班员",
+      "authority": "emergency",
+      "action": "reopen_road",
+      "target": "R2",
+      "target_kind": "road",
+      "cells": [
+        "G2",
+        "G4"
+      ],
+      "note": null
+    },
+    {
+      "type": "order",
+      "id": "O13",
+      "time": "2026-07-13T05:15:00+08:00",
+      "issued_at": "2026-07-13T05:15:00+08:00",
+      "effective_at": "2026-07-13T05:30:00+08:00",
+      "actor": "应急值班员",
+      "authority": "emergency",
+      "action": "reopen_road",
+      "target": "R1",
+      "target_kind": "road",
+      "cells": [
+        "G1",
+        "G2"
+      ],
+      "note": null
+    },
+    {
+      "type": "order_rejected",
+      "id": "O14-rejected",
+      "time": "2026-07-13T06:30:00+08:00",
+      "actor": "教育值班员·临江县",
+      "action": "resume_classes",
+      "target": "S2",
+      "proposed_effective_at": "2026-07-13T07:00:00+08:00",
+      "reasons": [
+        "雨量站 P3 窗口累计 41.0 毫米，超过上限 30.0 毫米"
+      ]
+    },
+    {
+      "type": "order_rejected",
+      "id": "O15-rejected",
+      "time": "2026-07-13T06:35:00+08:00",
+      "actor": "教育值班员·河谷区",
+      "action": "resume_classes",
+      "target": "S3",
+      "proposed_effective_at": "2026-07-13T07:00:00+08:00",
+      "reasons": [
+        "雨量站 P2 在观测窗口内离线或数据不足"
+      ]
+    },
+    {
+      "type": "order",
+      "id": "O16",
+      "time": "2026-07-13T06:50:00+08:00",
+      "issued_at": "2026-07-13T06:50:00+08:00",
+      "effective_at": "2026-07-13T07:00:00+08:00",
+      "actor": "教育值班员·临江县",
+      "authority": "education",
+      "action": "resume_classes",
+      "target": "S1",
+      "target_kind": "school",
+      "cells": [
+        "G1"
+      ],
+      "note": null
+    },
+    {
+      "type": "order_rejected",
+      "id": "O17-rejected",
+      "time": "2026-07-13T08:15:00+08:00",
+      "actor": "交通值班员",
+      "action": "resume_route",
+      "target": "B1",
+      "proposed_effective_at": "2026-07-13T08:30:00+08:00",
+      "reasons": [
+        "学校 S3 已停课，但校车线路 B1 仍显示正常运营"
+      ]
+    },
+    {
+      "type": "order",
+      "id": "O18",
+      "time": "2026-07-13T08:45:00+08:00",
+      "issued_at": "2026-07-13T08:45:00+08:00",
+      "effective_at": "2026-07-13T09:00:00+08:00",
+      "actor": "教育值班员·临江县",
+      "authority": "education",
+      "action": "resume_classes",
+      "target": "S2",
+      "target_kind": "school",
+      "cells": [
+        "G3"
+      ],
+      "note": null
+    },
+    {
+      "type": "order",
+      "id": "O19",
+      "time": "2026-07-13T09:30:00+08:00",
+      "issued_at": "2026-07-13T09:30:00+08:00",
+      "effective_at": "2026-07-13T10:00:00+08:00",
+      "actor": "教育值班员·河谷区",
+      "authority": "education",
+      "action": "resume_classes",
+      "target": "S3",
+      "target_kind": "school",
+      "cells": [
+        "G2"
+      ],
+      "note": null
+    },
+    {
+      "type": "order",
+      "id": "O20",
+      "time": "2026-07-13T09:35:00+08:00",
+      "issued_at": "2026-07-13T09:35:00+08:00",
+      "effective_at": "2026-07-13T10:00:00+08:00",
+      "actor": "交通值班员",
+      "authority": "transport",
+      "action": "resume_route",
+      "target": "B1",
+      "target_kind": "bus_route",
+      "cells": [
+        "G1",
+        "G2"
+      ],
+      "note": null
+    },
+    {
+      "type": "order",
+      "id": "O21",
+      "time": "2026-07-13T09:36:00+08:00",
+      "issued_at": "2026-07-13T09:36:00+08:00",
+      "effective_at": "2026-07-13T10:00:00+08:00",
+      "actor": "交通值班员",
+      "authority": "transport",
+      "action": "resume_route",
+      "target": "B2",
+      "target_kind": "bus_route",
+      "cells": [
+        "G2",
+        "G4"
+      ],
+      "note": null
+    }
   ]
 }

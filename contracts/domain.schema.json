@@ -8,41 +8,153 @@
     "sample_id",
     "actors",
     "facts",
-    "constraints"
+    "constraints",
+    "cells",
+    "districts",
+    "schools",
+    "roads",
+    "bus_routes",
+    "hazard_sites",
+    "shelters",
+    "rainfall_stations",
+    "rainfall_series",
+    "events"
   ],
   "properties": {
-    "domain": {
-      "type": "string",
-      "minLength": 1
-    },
-    "version": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "sample_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "actors": {
+    "domain": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 1},
+    "sample_id": {"type": "string", "minLength": 1},
+    "actors": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+    "facts": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+    "constraints": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+    "cells": {
       "type": "array",
-      "minItems": 2,
+      "minItems": 1,
+      "description": "统一预报格点，各部门共用",
       "items": {
-        "type": "string"
+        "type": "object",
+        "required": ["id", "polygon"],
+        "properties": {
+          "id": {"type": "string"},
+          "polygon": {"type": "array", "minItems": 3, "items": {"$ref": "#/$defs/point"}}
+        }
       }
     },
-    "facts": {
+    "districts": {
       "type": "array",
-      "minItems": 2,
       "items": {
-        "type": "string"
+        "type": "object",
+        "required": ["id", "name", "polygon"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "polygon": {"type": "array", "minItems": 3, "items": {"$ref": "#/$defs/point"}}
+        }
       }
     },
-    "constraints": {
+    "schools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "district", "point"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "district": {"type": "string", "description": "所属区县，教育部门按辖区签发"},
+          "point": {"$ref": "#/$defs/point"}
+        }
+      }
+    },
+    "roads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "polyline"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "polyline": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/point"}, "description": "跨区道路自然跨越多个格点"}
+        }
+      }
+    },
+    "bus_routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "serves", "uses_roads", "polyline"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "serves": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "uses_roads": {"type": "array", "items": {"type": "string"}},
+          "polyline": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/point"}}
+        }
+      }
+    },
+    "hazard_sites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "point"],
+        "properties": {"id": {"type": "string"}, "name": {"type": "string"}, "point": {"$ref": "#/$defs/point"}}
+      }
+    },
+    "shelters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "point"],
+        "properties": {"id": {"type": "string"}, "name": {"type": "string"}, "point": {"$ref": "#/$defs/point"}}
+      }
+    },
+    "rainfall_stations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "cell", "point"],
+        "properties": {
+          "id": {"type": "string"},
+          "cell": {"type": "string", "description": "所在格点"},
+          "point": {"$ref": "#/$defs/point"}
+        }
+      }
+    },
+    "rainfall_series": {
+      "type": "array",
+      "description": "逐桶实况雨量；value 为 null 表示该时段传感器离线",
+      "items": {
+        "type": "object",
+        "required": ["station_id", "start", "interval_minutes", "values"],
+        "properties": {
+          "station_id": {"type": "string"},
+          "start": {"type": "string", "format": "date-time"},
+          "interval_minutes": {"type": "integer", "minimum": 1},
+          "values": {"type": "array", "items": {"type": ["number", "null"], "minimum": 0}}
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "description": "只追加事件流：签发、生效、撤销、撤回、拒绝各自保留原始时刻，按时刻升序",
+      "items": {
+        "type": "object",
+        "required": ["type", "id", "time"],
+        "properties": {
+          "type": {
+            "enum": ["warning", "order", "order_revoked", "order_rejected", "manual_report", "report_retracted", "publish_blocked", "bulletin_published"]
+          },
+          "id": {"type": "string"},
+          "time": {"type": "string", "format": "date-time"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "point": {
       "type": "array",
       "minItems": 2,
-      "items": {
-        "type": "string"
-      }
+      "maxItems": 2,
+      "items": {"type": "number"}
     }
   },
   "additionalProperties": false
